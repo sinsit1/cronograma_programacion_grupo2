@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MF0227 · Seguimiento del curso</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --surface:#ffffff;
+      --surface-soft:#f8fafc;
+      --text:#182230;
+      --muted:#667085;
+      --line:#d8e0ea;
+      --primary:#5b5bd6;
+      --success:#159455;
+      --success-soft:#eaf8f0;
+      --warning:#d97706;
+      --warning-soft:#fff4df;
+      --future:#94a3b8;
+      --shadow:0 10px 32px rgba(24,34,48,.07);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(91,91,214,.11), transparent 30%),
+        linear-gradient(180deg,#f9fbff 0%,var(--bg) 100%);
+      min-height:100vh;
+    }
+
+    .page{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+      padding:30px 0 70px;
+    }
+
+    .compact-header{
+      background:var(--surface);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:22px 26px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:28px;
+      margin-bottom:24px;
+      border-left:6px solid var(--primary);
+    }
+
+    .compact-title span{
+      color:var(--primary);
+      font-size:.77rem;
+      font-weight:800;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+
+    .compact-title h1{
+      margin:6px 0;
+      font-size:clamp(1.45rem,3vw,2.05rem);
+      line-height:1.15;
+    }
+
+    .compact-title p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .compact-status{
+      min-width:390px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      border-left:1px solid var(--line);
+    }
+
+    .compact-status div{
+      padding:2px 15px;
+    }
+
+    .compact-status small{
+      display:block;
+      color:var(--muted);
+      font-size:.72rem;
+      margin-bottom:5px;
+    }
+
+    .compact-status strong{
+      display:block;
+      font-size:.86rem;
+      line-height:1.35;
+    }
+
+    .main-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 330px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .panel{
+      background:var(--surface);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:26px;
+    }
+
+    .panel h2{
+      margin:0 0 4px;
+      font-size:1.35rem;
+    }
+
+    .panel-subtitle{
+      margin:0 0 24px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .timeline{
+      position:relative;
+      padding-left:18px;
+    }
+
+    .timeline::before{
+      content:"";
+      position:absolute;
+      top:9px;
+      bottom:16px;
+      left:28px;
+      width:3px;
+      background:var(--line);
+      border-radius:999px;
+    }
+
+    .item{
+      position:relative;
+      padding-left:52px;
+      padding-bottom:24px;
+    }
+
+    .item:last-child{padding-bottom:0}
+
+    .marker{
+      position:absolute;
+      left:0;
+      top:2px;
+      width:23px;
+      height:23px;
+      border-radius:50%;
+      background:#fff;
+      border:4px solid var(--future);
+      z-index:1;
+      box-shadow:0 0 0 5px #fff;
+    }
+
+    .item.done .marker{border-color:var(--success); background:var(--success-soft)}
+    .item.current .marker{
+      border-color:var(--warning);
+      background:var(--warning-soft);
+      animation:pulse 1.8s infinite;
+    }
+
+    @keyframes pulse{
+      0%,100%{box-shadow:0 0 0 5px #fff,0 0 0 8px rgba(217,119,6,.10)}
+      50%{box-shadow:0 0 0 5px #fff,0 0 0 13px rgba(217,119,6,.03)}
+    }
+
+    .item-card{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      background:var(--surface-soft);
+      transition:.2s ease;
+    }
+
+    .item.done .item-card{
+      background:var(--success-soft);
+      border-color:#bde9cf;
+    }
+
+    .item.current .item-card{
+      background:var(--warning-soft);
+      border-color:#f1c879;
+      box-shadow:0 10px 24px rgba(217,119,6,.10);
+      transform:translateX(4px);
+    }
+
+    .item-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:10px;
+    }
+
+    .week{
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      font-weight:800;
+      color:var(--muted);
+    }
+
+    .date{
+      margin-top:4px;
+      font-weight:750;
+    }
+
+    .status{
+      flex:0 0 auto;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:.76rem;
+      font-weight:800;
+      background:#edf0f4;
+      color:#64748b;
+    }
+
+    .done .status{background:#d7f2e2;color:#107545}
+    .current .status{background:#ffe1a8;color:#9a5800}
+
+    .unit{
+      color:var(--primary);
+      font-weight:850;
+      margin-bottom:9px;
+    }
+
+    .activities{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .activity{
+      padding:8px 11px;
+      background:#fff;
+      border:1px solid #dce3ec;
+      border-radius:10px;
+      font-size:.88rem;
+      font-weight:700;
+    }
+
+    .done .activity{
+      border-color:#bce2cb;
+      color:#11673f;
+    }
+
+    .current .activity{
+      border-color:#ebbf69;
+      color:#8a5100;
+    }
+
+    .side{
+      position:sticky;
+      top:20px;
+    }
+
+    .focus{
+      border-radius:20px;
+      padding:22px;
+      background:linear-gradient(135deg,#fff8e9,#fff1cf);
+      border:1px solid #f0cf86;
+      margin-bottom:18px;
+    }
+
+    .focus-label{
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius:999px;
+      background:#ffe0a1;
+      color:#8f5400;
+      font-size:.75rem;
+      font-weight:850;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+    .focus h3{
+      margin:14px 0 8px;
+      font-size:1.35rem;
+    }
+
+    .focus p{
+      color:#72541f;
+      line-height:1.55;
+      margin:0;
+    }
+
+    .checklist{
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:21px;
+      background:var(--surface);
+    }
+
+    .checklist h3{
+      margin:0 0 14px;
+    }
+
+    .check-item{
+      display:flex;
+      gap:11px;
+      padding:11px 0;
+      border-bottom:1px solid #edf0f4;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    .check-item:last-child{border-bottom:0}
+
+    .check-icon{
+      width:23px;
+      height:23px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      font-size:.8rem;
+      font-weight:900;
+      background:#edf0f4;
+      color:#7a8797;
+    }
+
+    .check-item.done{color:#176c45}
+    .check-item.done .check-icon{
+      background:#d9f3e3;
+      color:#107545;
+    }
+
+    .exam-box{
+      margin-top:18px;
+      border-radius:18px;
+      padding:18px;
+      background:#eef2ff;
+      color:#39399b;
+    }
+
+    .exam-box h3{
+      margin:0 0 10px;
+      font-size:1.05rem;
+    }
+
+    .exam-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:8px 0;
+      border-bottom:1px solid rgba(57,57,155,.12);
+    }
+
+    .exam-row:last-child{border-bottom:0}
+
+    .notice{
+      margin-top:18px;
+      padding:16px;
+      border-radius:15px;
+      background:#f6f7fb;
+      color:#596579;
+      font-size:.9rem;
+      line-height:1.5;
+    }
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:.84rem;
+      margin-top:28px;
+    }
+
+    @media (max-width:900px){
+      .compact-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .compact-status{
+        min-width:0;
+        width:100%;
+        border-left:0;
+        border-top:1px solid var(--line);
+        padding-top:14px;
+      }
+
+      .main-grid{grid-template-columns:1fr}
+      .side{position:static}
+    }
+
+    @media (max-width:600px){
+      .page{
+        width:min(100% - 18px,1180px);
+        padding-top:10px;
+      }
+
+      .compact-header{
+        padding:18px;
+        border-radius:17px;
+      }
+
+      .compact-status{
+        grid-template-columns:1fr;
+        gap:10px;
+      }
+
+      .compact-status div{padding:0}
+      .panel{border-radius:18px;padding:20px}
+      .timeline{padding-left:0}
+      .timeline::before{left:10px}
+      .item{padding-left:39px}
+      .marker{left:0;width:21px;height:21px}
+      .item-top{flex-direction:column}
+      .status{align-self:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="compact-header">
+      <div class="compact-title">
+        <span>MF0227 · 250 horas</span>
+        <h1>Programación orientada a objetos y bases de datos relacionales</h1>
+        <p>Consulta qué actividades deberías tener entregadas y cuáles corresponden a esta semana.</p>
+      </div>
+
+      <div class="compact-status">
+        <div>
+          <small>Hoy</small>
+          <strong id="todayText">—</strong>
+        </div>
+        <div>
+          <small>Situación actual</small>
+          <strong id="currentSituation">Calculando…</strong>
+        </div>
+        <div>
+          <small>Unidad</small>
+          <strong id="currentUnit">—</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="main-grid">
+      <div class="panel">
+        <h2>Línea del tiempo</h2>
+        <p class="panel-subtitle">
+          Cada bloque cambia de estado automáticamente al llegar su fecha.
+        </p>
+        <div id="timeline" class="timeline"></div>
+      </div>
+
+      <aside class="side">
+        <div class="focus">
+          <span class="focus-label">Ahora debes centrarte en</span>
+          <h3 id="focusTitle">Calculando…</h3>
+          <p id="focusText">Revisando el calendario del curso.</p>
+        </div>
+
+        <div class="checklist">
+          <h3>Resumen de unidades</h3>
+          <div id="checklist"></div>
+
+          <div class="exam-box">
+            <h3>Fechas de evaluación</h3>
+            <div class="exam-row">
+              <span>Examen final</span>
+              <strong>18/12/2026</strong>
+            </div>
+            <div class="exam-row">
+              <span>Recuperación</span>
+              <strong>21/12/2026</strong>
+            </div>
+          </div>
+
+          <div class="notice">
+            Si tienes alguna actividad atrasada, empieza por la más antigua y contacta con la tutora si necesitas ayuda.
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer>Seguimiento automático del MF0227</footer>
+  </main>
+
+  <script>
+    const schedule = [
+      {
+        label:"UF2404 · Semana 1", start:"2026-10-05", end:"2026-10-09",
+        dates:"5 octubre – 9 octubre", unit:"UF2404",
+        activities:["UD1-ACT1","UD2-ACT1","UD2-ACT2","UD3-ACT1"]
+      },
+      {
+        label:"UF2404 · Semana 2", start:"2026-10-12", end:"2026-10-16",
+        dates:"12 octubre – 16 octubre", unit:"UF2404",
+        activities:["UD3-ACT2","UD4-ACT1","UD4-ACT2","UD5-ACT1"]
+      },
+      {
+        label:"UF2404 · Semana 3", start:"2026-10-19", end:"2026-10-23",
+        dates:"19 octubre – 23 octubre", unit:"UF2404",
+        activities:["UD6-ACT1","UD7-ACT1","UD8-ACT1","UD9-ACT1","UD9-ACT2"]
+      },
+      {
+        label:"UF2405 · Semana 1", start:"2026-10-26", end:"2026-10-30",
+        dates:"26 octubre – 30 octubre", unit:"UF2405",
+        activities:["UD1-ACT1","UD2-ACT1","UD2-ACT2"]
+      },
+      {
+        label:"UF2405 · Semana 2", start:"2026-11-02", end:"2026-11-06",
+        dates:"2 noviembre – 6 noviembre", unit:"UF2405",
+        activities:["UD3-ACT1","UD3-ACT2","UD3-ACT3"]
+      },
+      {
+        label:"UF2405 · Semana 3", start:"2026-11-09", end:"2026-11-13",
+        dates:"9 noviembre – 13 noviembre", unit:"UF2405",
+        activities:["UD4-ACT1","UD5-ACT1","UD6-ACT1","UD7-ACT1"]
+      },
+      {
+        label:"UF2406 · Semana 1", start:"2026-11-16", end:"2026-11-20",
+        dates:"16 noviembre – 20 noviembre", unit:"UF2406",
+        activities:["UD1-ACT1","UD1-ACT2","UD1-ACT3","UD1-ACT4"]
+      },
+      {
+        label:"UF2406 · Semana 2", start:"2026-11-23", end:"2026-11-27",
+        dates:"23 noviembre – 27 noviembre", unit:"UF2406",
+        activities:["UD1-ACT5","UD2-ACT1","UD3-ACT1","UD3-ACT2"]
+      },
+      {
+        label:"UF2406 · Semana 3", start:"2026-11-30", end:"2026-12-04",
+        dates:"30 noviembre – 4 diciembre", unit:"UF2406",
+        activities:["UD4-ACT1","UD4-ACT2","UD4-ACT3","UD5-ACT1"]
+      },
+      {
+        label:"UF2406 · Semana 4", start:"2026-12-07", end:"2026-12-11",
+        dates:"7 diciembre – 11 diciembre", unit:"UF2406",
+        activities:["UD6-ACT1","UD6-ACT2","UD7-ACT1","UD7-ACT2","UD8-ACT1"]
+      },
+      {
+        label:"UF2406 · Semana 5", start:"2026-12-14", end:"2026-12-17",
+        dates:"14 diciembre – 17 diciembre", unit:"UF2406",
+        activities:["UD8-ACT2","UD8-ACT3","UD8-ACT4","UD8-ACT5","Cierre y repaso"]
+      },
+      {
+        label:"Examen final", start:"2026-12-18", end:"2026-12-18",
+        dates:"18 diciembre", unit:"Evaluación final",
+        activities:["Examen final"], type:"exam"
+      },
+      {
+        label:"Recuperación", start:"2026-12-21", end:"2026-12-21",
+        dates:"21 diciembre", unit:"Recuperación",
+        activities:["Examen de recuperación"], type:"exam"
+      }
+    ];
+
+    function localDate(dateString){
+      return new Date(dateString + "T00:00:00");
+    }
+
+    function dayEnd(dateString){
+      return new Date(dateString + "T23:59:59");
+    }
+
+    const now = new Date();
+    const courseStart = localDate("2026-10-05");
+    const courseEnd = dayEnd("2026-12-21");
+
+    function getStatus(item){
+      const start = localDate(item.start);
+      const end = dayEnd(item.end);
+      if(now > end) return "done";
+      if(now >= start && now <= end) return "current";
+      return "future";
+    }
+
+    function statusText(status, item){
+      if(status === "done") return "Ya debería estar";
+      if(status === "current") return "Esta semana";
+      return "Próximamente";
+    }
+
+    function renderTimeline(){
+      const timeline = document.getElementById("timeline");
+      timeline.innerHTML = schedule.map(item => {
+        const status = getStatus(item);
+        return `
+          <article class="item ${status}">
+            <div class="marker"></div>
+            <div class="item-card">
+              <div class="item-top">
+                <div>
+                  <div class="week">${item.label}</div>
+                  <div class="date">${item.dates}</div>
+                </div>
+                <span class="status">${statusText(status,item)}</span>
+              </div>
+              <div class="unit">${item.unit}</div>
+              <div class="activities">
+                ${item.activities.map(a => `<span class="activity">${a}</span>`).join("")}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function updateHeader(){
+      const formatter = new Intl.DateTimeFormat("es-ES",{
+        weekday:"long", day:"numeric", month:"long", year:"numeric"
+      });
+
+      const formatted = formatter.format(now);
+      document.getElementById("todayText").textContent =
+        formatted.charAt(0).toUpperCase() + formatted.slice(1);
+
+      const current = schedule.find(item => getStatus(item) === "current");
+      const next = schedule.find(item => getStatus(item) === "future");
+
+      if(now < courseStart){
+        document.getElementById("currentSituation").textContent = "El curso todavía no ha comenzado";
+        document.getElementById("currentUnit").textContent = "Inicio: 5 de octubre";
+      }else if(now > courseEnd){
+        document.getElementById("currentSituation").textContent = "Curso finalizado";
+        document.getElementById("currentUnit").textContent = "Evaluación completada";
+      }else if(current){
+        document.getElementById("currentSituation").textContent =
+          current.label;
+        document.getElementById("currentUnit").textContent = current.unit;
+      }else{
+        document.getElementById("currentSituation").textContent = "Entre periodos";
+        document.getElementById("currentUnit").textContent = next ? next.unit : "—";
+      }
+    }
+
+    function updateFocus(){
+      const current = schedule.find(item => getStatus(item) === "current");
+      const future = schedule.find(item => getStatus(item) === "future");
+
+      if(current){
+        if(current.type === "exam"){
+          document.getElementById("focusTitle").textContent = current.label;
+          document.getElementById("focusText").textContent =
+            `La fecha prevista es el ${current.dates}.`;
+        }else{
+          document.getElementById("focusTitle").textContent =
+            `${current.unit}: ${current.activities.join(", ")}`;
+          document.getElementById("focusText").textContent =
+            `Estas son las actividades previstas para ${current.dates}. Las actividades anteriores ya deberían estar entregadas.`;
+        }
+      }else if(now < courseStart){
+        document.getElementById("focusTitle").textContent = "Preparar el inicio";
+        document.getElementById("focusText").textContent =
+          "El curso comienza el 5 de octubre con las primeras actividades de la UF2404.";
+      }else if(now > courseEnd){
+        document.getElementById("focusTitle").textContent = "Curso finalizado";
+        document.getElementById("focusText").textContent =
+          "Ya se ha alcanzado la fecha de recuperación.";
+      }else if(future){
+        document.getElementById("focusTitle").textContent = `Próximo bloque: ${future.label}`;
+        document.getElementById("focusText").textContent =
+          `Comenzará el ${future.dates} con ${future.unit}.`;
+      }
+    }
+
+    function updateChecklist(){
+      const container = document.getElementById("checklist");
+      const units = [
+        {code:"UF2404", name:"Principios de la programación orientada a objetos"},
+        {code:"UF2405", name:"Modelo de programación web y bases de datos"},
+        {code:"UF2406", name:"Ciclo de vida del desarrollo de aplicaciones"}
+      ];
+
+      container.innerHTML = units.map(unit => {
+        const unitItems = schedule.filter(item => item.unit === unit.code);
+        const allDone = unitItems.length && unitItems.every(item => getStatus(item) === "done");
+        const current = unitItems.some(item => getStatus(item) === "current");
+
+        let text = "Todavía no iniciada";
+        if(allDone) text = "Según el calendario, ya debería estar completa";
+        else if(current) text = "Unidad en curso";
+
+        return `
+          <div class="check-item ${allDone ? "done" : ""}">
+            <span class="check-icon">${allDone ? "✓" : current ? "•" : "→"}</span>
+            <div>
+              <strong>${unit.code}</strong><br>
+              ${unit.name}<br>
+              <small>${text}</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    renderTimeline();
+    updateHeader();
+    updateFocus();
+    updateChecklist();
+  </script>
+</body>
+</html>
