@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MF0227 · Seguimiento del curso</title>
+  <title>MF0227_3 · Seguimiento del curso</title>
   <style>
     :root{
       --bg:#f4f7fb;
@@ -233,8 +233,8 @@
 
     .activities{
       display:flex;
-      flex-wrap:wrap;
-      gap:8px;
+      flex-direction:column;
+      gap:6px;
     }
 
     .activity{
@@ -243,7 +243,15 @@
       border:1px solid #dce3ec;
       border-radius:10px;
       font-size:.88rem;
-      font-weight:700;
+      font-weight:600;
+      line-height:1.4;
+    }
+
+    .activity b{
+      display:inline-block;
+      min-width:34px;
+      margin-right:6px;
+      font-weight:850;
     }
 
     .done .activity{
@@ -356,6 +364,13 @@
 
     .exam-row:last-child{border-bottom:0}
 
+    .exam-note{
+      margin:10px 0 0;
+      font-size:.85rem;
+      line-height:1.45;
+      color:#4b4fa6;
+    }
+
     .notice{
       margin-top:18px;
       padding:16px;
@@ -422,9 +437,9 @@
   <main class="page">
     <section class="compact-header">
       <div class="compact-title">
-        <span>MF0227 · 250 horas</span>
-        <h1>Programación orientada a objetos y bases de datos relacionales</h1>
-        <p>Consulta qué actividades deberías tener entregadas y cuáles corresponden a esta semana.</p>
+        <span>MF0227_3 · IFCD0112 · 250 horas</span>
+        <h1>Programación orientada a objetos</h1>
+        <p>Consulta qué actividades deberían estar entregadas según la planificación de la evaluación.</p>
       </div>
 
       <div class="compact-status">
@@ -447,7 +462,7 @@
       <div class="panel">
         <h2>Línea del tiempo</h2>
         <p class="panel-subtitle">
-          Cada bloque cambia de estado automáticamente al llegar su fecha.
+          Cada bloque cambia de estado automáticamente según las fechas de su periodo.
         </p>
         <div id="timeline" class="timeline"></div>
       </div>
@@ -466,117 +481,250 @@
           <div class="exam-box">
             <h3>Fechas de evaluación</h3>
             <div class="exam-row">
-              <span>Examen final</span>
+              <span>Examen final (1ª convocatoria)</span>
               <strong>18/12/2026</strong>
             </div>
             <div class="exam-row">
-              <span>Recuperación</span>
+              <span>Recuperación (2ª convocatoria)</span>
               <strong>21/12/2026</strong>
             </div>
+            <p class="exam-note">Prueba de módulo teórico-práctica: test de opción multirrespuesta y prueba práctica por escrito. 3 horas en aula de informática.</p>
           </div>
 
           <div class="notice">
-            Si tienes alguna actividad atrasada, empieza por la más antigua y contacta con la tutora si necesitas ayuda.
+            Las fechas de cada “Día” se calculan como el día lectivo n a partir del 5 de octubre (lunes a viernes, sin festivos). Si tienes alguna actividad atrasada, empieza por la más antigua y contacta con la tutora si necesitas ayuda.
           </div>
         </div>
       </aside>
     </section>
 
-    <footer>Seguimiento automático del MF0227</footer>
+    <footer>Seguimiento automático del MF0227_3 · Según Documento 4.3 (planificación de la evaluación)</footer>
   </main>
 
   <script>
-    const schedule = [
-      {
-        label:"UF2404 · Semana 1", start:"2026-10-05", end:"2026-10-09",
-        dates:"5 octubre – 9 octubre", unit:"UF2404",
-        activities:["UD1-ACT1","UD2-ACT1","UD2-ACT2","UD3-ACT1"]
-      },
-      {
-        label:"UF2404 · Semana 2", start:"2026-10-12", end:"2026-10-16",
-        dates:"12 octubre – 16 octubre", unit:"UF2404",
-        activities:["UD3-ACT2","UD4-ACT1","UD4-ACT2","UD5-ACT1"]
-      },
-      {
-        label:"UF2404 · Semana 3", start:"2026-10-19", end:"2026-10-23",
-        dates:"19 octubre – 23 octubre", unit:"UF2404",
-        activities:["UD6-ACT1","UD7-ACT1","UD8-ACT1","UD9-ACT1","UD9-ACT2"]
-      },
-      {
-        label:"UF2405 · Semana 1", start:"2026-10-26", end:"2026-10-30",
-        dates:"26 octubre – 30 octubre", unit:"UF2405",
-        activities:["UD1-ACT1","UD2-ACT1","UD2-ACT2"]
-      },
-      {
-        label:"UF2405 · Semana 2", start:"2026-11-02", end:"2026-11-06",
-        dates:"2 noviembre – 6 noviembre", unit:"UF2405",
-        activities:["UD3-ACT1","UD3-ACT2","UD3-ACT3"]
-      },
-      {
-        label:"UF2405 · Semana 3", start:"2026-11-09", end:"2026-11-13",
-        dates:"9 noviembre – 13 noviembre", unit:"UF2405",
-        activities:["UD4-ACT1","UD5-ACT1","UD6-ACT1","UD7-ACT1"]
-      },
-      {
-        label:"UF2406 · Semana 1", start:"2026-11-16", end:"2026-11-20",
-        dates:"16 noviembre – 20 noviembre", unit:"UF2406",
-        activities:["UD1-ACT1","UD1-ACT2","UD1-ACT3","UD1-ACT4"]
-      },
-      {
-        label:"UF2406 · Semana 2", start:"2026-11-23", end:"2026-11-27",
-        dates:"23 noviembre – 27 noviembre", unit:"UF2406",
-        activities:["UD1-ACT5","UD2-ACT1","UD3-ACT1","UD3-ACT2"]
-      },
-      {
-        label:"UF2406 · Semana 3", start:"2026-11-30", end:"2026-12-04",
-        dates:"30 noviembre – 4 diciembre", unit:"UF2406",
-        activities:["UD4-ACT1","UD4-ACT2","UD4-ACT3","UD5-ACT1"]
-      },
-      {
-        label:"UF2406 · Semana 4", start:"2026-12-07", end:"2026-12-11",
-        dates:"7 diciembre – 11 diciembre", unit:"UF2406",
-        activities:["UD6-ACT1","UD6-ACT2","UD7-ACT1","UD7-ACT2","UD8-ACT1"]
-      },
-      {
-        label:"UF2406 · Semana 5", start:"2026-12-14", end:"2026-12-17",
-        dates:"14 diciembre – 17 diciembre", unit:"UF2406",
-        activities:["UD8-ACT2","UD8-ACT3","UD8-ACT4","UD8-ACT5","Cierre y repaso"]
-      },
-      {
-        label:"Examen final", start:"2026-12-18", end:"2026-12-18",
-        dates:"18 diciembre", unit:"Evaluación final",
-        activities:["Examen final"], type:"exam"
-      },
-      {
-        label:"Recuperación", start:"2026-12-21", end:"2026-12-21",
-        dates:"21 diciembre", unit:"Recuperación",
-        activities:["Examen de recuperación"], type:"exam"
-      }
+    const MONTHS = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+    const FIRST_DAY = "2026-10-05";
+
+    const units = [
+      {code:"UF2404", name:"Principios de la programación orientada a objetos"},
+      {code:"UF2405", name:"Modelo de programación web de bases de datos"},
+      {code:"UF2406", name:"El ciclo de vida del desarrollo de aplicaciones"}
+    ];
+
+    // Cada periodo: "days" es [primer día, último día] según el PDF (Día 1 … Día 49).
+    const periods = [
+      {unit:"UF2404", days:[1,1], acts:[
+        {code:"E1",  text:"UD1 · Evaluación diagnóstica"},
+        {code:"E2",  text:"UD1 · Ejercicio teórico-práctico «El paradigma de orientación a objetos» (CE1.1, CE2.1)"}
+      ]},
+      {unit:"UF2404", days:[2,3], acts:[
+        {code:"E3",  text:"UD1 · Test de autoevaluación"},
+        {code:"E4",  text:"UD2 · Ejercicio teórico-práctico «Clases y objetos» (CE1.2, CE1.3, CE1.4, CE1.8, CE2.4)"}
+      ]},
+      {unit:"UF2404", days:[4,5], acts:[
+        {code:"E5",  text:"UD2 · Caso práctico «Creación de una clase» (CE1)"},
+        {code:"E6",  text:"UD2 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2404", days:[6,7], acts:[
+        {code:"E7",  text:"UD3 · Caso práctico «Herencia» (CE1.5, CE1.6)"},
+        {code:"E8",  text:"UD3 · Caso práctico «Leyes de Deméter» (C1, C2)"}
+      ]},
+      {unit:"UF2404", days:[8,9], acts:[
+        {code:"E9",  text:"UD3 · Test de autoevaluación"},
+        {code:"E10", text:"UD4 · Caso práctico «La implementación de las relaciones entre clases» (CE2.3)"}
+      ]},
+      {unit:"UF2404", days:[10,11], acts:[
+        {code:"E11", text:"UD4 · Caso práctico «Relaciones entre clases» (CE2.3)"},
+        {code:"E12", text:"UD4 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2404", days:[12,12], acts:[
+        {code:"E13", text:"UD5 · Caso práctico «Polimorfismo» (CE1.7)"},
+        {code:"E14", text:"UD5 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2404", days:[13,14], acts:[
+        {code:"E15", text:"UD6 · Caso práctico «Paso por parámetros: por valor y por referencia» (C2)"},
+        {code:"E16", text:"UD6 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2404", days:[15,15], acts:[
+        {code:"E17", text:"UD7 · Ejercicio teórico-práctico «Estructura de datos» (CE2.2, CE2.7)"},
+        {code:"E18", text:"UD7 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2404", days:[16,16], acts:[
+        {code:"E19", text:"UD8 · Caso práctico «Lenguaje orientado a objetos» (CE2.5, CE2.6, CE2.8, CE2.9)"},
+        {code:"E20", text:"UD8 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2404", days:[17,17], acts:[
+        {code:"E21", text:"UD9 · Ejercicio teórico-práctico «IDE en Java» (C2)"},
+        {code:"E21", text:"UD9 · Caso práctico «Implementación» (CE2.10)"}
+      ]},
+      {unit:"UF2404", days:[18,18], acts:[
+        {code:"E22", text:"UD9 · Test de autoevaluación"},
+        {code:"E23", text:"Test final de la UF2404 en campus"}
+      ]},
+
+      {unit:"UF2405", days:[19,19], acts:[
+        {code:"E1",  text:"UD1 · Evaluación diagnóstica"}
+      ]},
+      {unit:"UF2405", days:[20,21], acts:[
+        {code:"E2",  text:"UD1 · Ejercicio teórico-práctico «Comparativa .NET y J2EE» (CE1.1, CE1.2, CE1.3, CE1.7)"},
+        {code:"E3",  text:"UD1 · Test de autoevaluación"},
+        {code:"E4",  text:"UD2 · Ejercicio teórico-práctico «Capas de una aplicación web» (CE1.4)"}
+      ]},
+      {unit:"UF2405", days:[22,22], acts:[
+        {code:"E5",  text:"UD2 · Ejercicio teórico-práctico «Programación en capas» (CE1.2, CE1.4)"}
+      ]},
+      {unit:"UF2405", days:[23,23], acts:[
+        {code:"E6",  text:"UD2 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2405", days:[24,24], acts:[
+        {code:"E7",  text:"UD3 · Ejercicio teórico-práctico «Identificación de códigos de cada lenguaje de programación web» (CE1.5, CE1.6)"}
+      ]},
+      {unit:"UF2405", days:[25,25], acts:[
+        {code:"E8",  text:"UD3 · Ejercicio teórico-práctico «Lenguajes de programación web» (CE1.5, CE1.6)"}
+      ]},
+      {unit:"UF2405", days:[26,28], acts:[
+        {code:"E9",  text:"UD3 · Ejercicio teórico-práctico «Lenguajes orientados a objetos» (CE1.8)"},
+        {code:"E10", text:"UD3 · Test de autoevaluación"},
+        {code:"E11", text:"UD4 · Ejercicio teórico-práctico «Funciones de diferentes códigos» (CE2.1)"}
+      ]},
+      {unit:"UF2405", days:[29,30], acts:[
+        {code:"E12", text:"UD4 · Test de autoevaluación"},
+        {code:"E13", text:"UD5 · Caso práctico «Bases de datos» (CE2.2, CE2.3, CE2.4, CE2.5)"},
+        {code:"E14", text:"UD5 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2405", days:[31,33], acts:[
+        {code:"E15", text:"UD6 · Caso práctico «Aplicación con acceso a una base de datos relacional desde una clase» (CE2.6)"},
+        {code:"E16", text:"UD6 · Test de autoevaluación"},
+        {code:"E17", text:"UD7 · Caso práctico «Consultas en SQL» (CE2.3, CE2.4)"},
+        {code:"E18", text:"UD7 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2405", days:[34,34], acts:[
+        {code:"E19", text:"Test final de la UF2405 en campus"}
+      ]},
+
+      {unit:"UF2406", days:[35,35], acts:[
+        {code:"E1",  text:"UD1 · Evaluación diagnóstica"}
+      ]},
+      {unit:"UF2406", days:[36,36], acts:[
+        {code:"E2",  text:"UD1 · Ejercicio teórico-práctico «Modelo de ingeniería de software» (CE1.1, CE1.2, CE1.3)"}
+      ]},
+      {unit:"UF2406", days:[37,38], acts:[
+        {code:"E3",  text:"UD1 · Ejercicio teórico-práctico «Calidad del software» (CE1.2, CE1.3)"},
+        {code:"E4",  text:"UD1 · Ejercicio teórico-práctico «Netbeans» (CE1.4)"},
+        {code:"E5",  text:"UD1 · Ejercicio teórico-práctico «Consideraciones en la modificación de código» (CE4.1, CE4.2, CE4.3)"},
+        {code:"E6",  text:"UD1 · Caso práctico «VisualSvn para gestión de configuración» (CE6.6)"},
+        {code:"E7",  text:"UD1 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2406", days:[39,39], acts:[
+        {code:"E8",  text:"UD2 · Ejercicio teórico-práctico «Interpretación de diagramas de Gantt y Pert» (CE5.1)"},
+        {code:"E9",  text:"UD2 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2406", days:[40,40], acts:[
+        {code:"E10", text:"UD3 · Ejercicio teórico-práctico «Interpretación de diagramas de casos de uso» (CE5.1)"},
+        {code:"E11", text:"UD3 · Ejercicio teórico-práctico «Diagrama de caso de uso» (CE5.1)"},
+        {code:"E12", text:"UD3 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2406", days:[41,42], acts:[
+        {code:"E13", text:"UD4 · Ejercicio teórico-práctico «Programación visual en Java» (CE5.2, CE5.3, CE5.4, CE5.5, CE5.6)"},
+        {code:"E14", text:"UD4 · Caso práctico «Programación visual en Java usando la GUI de Swing» (CE5.7)"},
+        {code:"E15", text:"UD4 · Caso práctico «Verificación de la programación visual en Java» (CE5.8)"}
+      ]},
+      {unit:"UF2406", days:[43,43], acts:[
+        {code:"E16", text:"UD4 · Test de autoevaluación"},
+        {code:"E17", text:"UD5 · Caso práctico «Calidad y pruebas del software» (CE1.5)"},
+        {code:"E18", text:"UD5 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2406", days:[44,44], acts:[
+        {code:"E19", text:"UD6 · Caso práctico «Depuración y pruebas de código» (CE2.1, CE2.2, CE2.3, CE2.4)"},
+        {code:"E20", text:"UD6 · Caso práctico «Pruebas de código» (CE2.6, CE2.7)"},
+        {code:"E21", text:"UD6 · Test de autoevaluación"},
+        {code:"E22", text:"UD7 · Caso práctico «Tratamiento de excepciones» (CE2.5)"}
+      ]},
+      {unit:"UF2406", days:[45,45], acts:[
+        {code:"E23", text:"UD7 · Caso práctico «Control y gestión de excepciones en código» (CE4.5)"}
+      ]},
+      {unit:"UF2406", days:[46,46], acts:[
+        {code:"E24", text:"UD7 · Test de autoevaluación"},
+        {code:"E25", text:"UD8 · Ejercicio teórico-práctico «Generación de plantillas» (CE3.1–CE3.6)"},
+        {code:"E26", text:"UD8 · Caso práctico «Documentar código» (CE3.7, CE3.10)"}
+      ]},
+      {unit:"UF2406", days:[47,47], acts:[
+        {code:"E27", text:"UD8 · Caso práctico «Documentación de pruebas» (CE3.8, CE3.10)"},
+        {code:"E28", text:"UD8 · Caso práctico grupal «Manuales y plantillas de proyectos» (CE3.9)"},
+        {code:"E29", text:"UD8 · Caso práctico «Mantenimiento de un proyecto de software» (CE4.4)"}
+      ]},
+      {unit:"UF2406", days:[48,48], acts:[
+        {code:"E30", text:"UD8 · Test de autoevaluación"}
+      ]},
+      {unit:"UF2406", days:[49,49], acts:[
+        {code:"E31", text:"Test final en campus (el PDF lo indica como UF2405)"}
+      ]}
+    ];
+
+    const exams = [
+      {unit:"Evaluación final", label:"Examen final", type:"exam",
+        start:"2026-12-18", end:"2026-12-18", dates:"18 dic",
+        acts:[{code:"1ª", text:"Prueba de evaluación final del módulo · 3 horas · aula de informática"}]},
+      {unit:"Recuperación", label:"Recuperación", type:"exam",
+        start:"2026-12-21", end:"2026-12-21", dates:"21 dic",
+        acts:[{code:"2ª", text:"Prueba de evaluación final del módulo (2ª convocatoria)"}]}
     ];
 
     function localDate(dateString){
       return new Date(dateString + "T00:00:00");
     }
 
-    function dayEnd(dateString){
-      return new Date(dateString + "T23:59:59");
+    function dayEnd(date){
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
     }
 
+    function formatDay(date){
+      return `${date.getDate()} ${MONTHS[date.getMonth()]}`;
+    }
+
+    // Día n del PDF = n-ésimo día lectivo (lunes a viernes) a partir del 5/10/2026
+    const workdays = [];
+    (function buildWorkdays(){
+      const d = localDate(FIRST_DAY);
+      while(workdays.length < 49){
+        if(d.getDay() !== 0 && d.getDay() !== 6) workdays.push(new Date(d));
+        d.setDate(d.getDate() + 1);
+      }
+    })();
+
+    const periodItems = periods.map(p => {
+      const start = workdays[p.days[0] - 1];
+      const end = workdays[p.days[1] - 1];
+      const label = p.days[0] === p.days[1]
+        ? `Día ${p.days[0]}`
+        : `Días ${p.days[0]}–${p.days[1]}`;
+      const dates = start.getTime() === end.getTime()
+        ? formatDay(start)
+        : `${formatDay(start)} – ${formatDay(end)}`;
+      return {unit:p.unit, label, dates, acts:p.acts, start, end: dayEnd(end)};
+    });
+
+    const examItems = exams.map(e => ({
+      ...e,
+      start: localDate(e.start),
+      end: dayEnd(localDate(e.end))
+    }));
+
+    const schedule = [...periodItems, ...examItems];
+
     const now = new Date();
-    const courseStart = localDate("2026-10-05");
-    const courseEnd = dayEnd("2026-12-21");
+    const courseStart = workdays[0];
+    const courseEnd = dayEnd(localDate("2026-12-21"));
 
     function getStatus(item){
-      const start = localDate(item.start);
-      const end = dayEnd(item.end);
-      if(now > end) return "done";
-      if(now >= start && now <= end) return "current";
+      if(now > item.end) return "done";
+      if(now >= item.start && now <= item.end) return "current";
       return "future";
     }
 
-    function statusText(status, item){
+    function statusText(status){
       if(status === "done") return "Ya debería estar";
-      if(status === "current") return "Esta semana";
+      if(status === "current") return "En curso";
       return "Próximamente";
     }
 
@@ -593,11 +741,11 @@
                   <div class="week">${item.label}</div>
                   <div class="date">${item.dates}</div>
                 </div>
-                <span class="status">${statusText(status,item)}</span>
+                <span class="status">${statusText(status)}</span>
               </div>
               <div class="unit">${item.unit}</div>
               <div class="activities">
-                ${item.activities.map(a => `<span class="activity">${a}</span>`).join("")}
+                ${item.acts.map(a => `<span class="activity"><b>${a.code}</b>${a.text}</span>`).join("")}
               </div>
             </div>
           </article>
@@ -624,8 +772,7 @@
         document.getElementById("currentSituation").textContent = "Curso finalizado";
         document.getElementById("currentUnit").textContent = "Evaluación completada";
       }else if(current){
-        document.getElementById("currentSituation").textContent =
-          current.label;
+        document.getElementById("currentSituation").textContent = `${current.unit} · ${current.label}`;
         document.getElementById("currentUnit").textContent = current.unit;
       }else{
         document.getElementById("currentSituation").textContent = "Entre periodos";
@@ -644,9 +791,9 @@
             `La fecha prevista es el ${current.dates}.`;
         }else{
           document.getElementById("focusTitle").textContent =
-            `${current.unit}: ${current.activities.join(", ")}`;
+            `${current.unit}: ${current.acts.map(a => a.code).join(", ")}`;
           document.getElementById("focusText").textContent =
-            `Estas son las actividades previstas para ${current.dates}. Las actividades anteriores ya deberían estar entregadas.`;
+            `Estas son las actividades previstas para ${current.label} (${current.dates}). Las actividades anteriores ya deberían estar entregadas.`;
         }
       }else if(now < courseStart){
         document.getElementById("focusTitle").textContent = "Preparar el inicio";
@@ -665,11 +812,6 @@
 
     function updateChecklist(){
       const container = document.getElementById("checklist");
-      const units = [
-        {code:"UF2404", name:"Principios de la programación orientada a objetos"},
-        {code:"UF2405", name:"Modelo de programación web y bases de datos"},
-        {code:"UF2406", name:"Ciclo de vida del desarrollo de aplicaciones"}
-      ];
 
       container.innerHTML = units.map(unit => {
         const unitItems = schedule.filter(item => item.unit === unit.code);
